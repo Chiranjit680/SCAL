@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        /* Reset and basic styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            position: relative;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            z-index: 2;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: #555;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding-top: 50px;
+            padding-left: 200px; /* Adjust this value to create space for the vertical navbar */
+        }
+
+        .card {
+            border: 2px solid white;
+            background-color: hsla(0, 0%, 10%, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            border-radius: 1rem;
+ 
+  backdrop-filter: blur(8px);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .profile-picture {
+            margin-bottom: 20px;
+        }
+
+        .profile-picture img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        .profile-details {
+            display: grid;
+            gap: 20px;
+        }
+
+        .profile-details div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .profile-details label {
+            font-weight: bold;
+        }
+
+        video {
+            object-fit: cover;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            opacity: 0.5;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Your Profile</a>
+            <a href="#">Recipes</a>
+            <a href="#">Book A Servicing</a>
+            <a href="#">Food Shorts</a>
+            <a href="#">Order from Partners</a>
+            <a href="#">Order Ingredients</a>
+        </nav>
+    </header>
+
+    <video autoplay muted loop>
+        <source src="vid.mp4" type="video/mp4">
+    </video>
+
+    <div class="container">
+        <div class="card">
+            <h1>User Profile</h1>
+            <div class="profile-picture">
+                <img id="profile-pic" src="CS.jpg" alt="Profile Picture">
+            </div>
+            <div class="profile-details">
+                <div><label>Name:</label><span id="name"></span></div>
+                <div><label>Age:</label><span id="age"></span></div>
+                <div><label>Email:</label><span id="email"></span></div>
+                <div><label>Nationality:</label><span id="nationality"></span></div>
+                <div><label>Phone No:</label><span id="phone"></span></div>
+                <div><label>Nutrients Required:</label><span id="nutrients"></span></div>
+                <div><label>Default Cuisine:</label><span id="cuisine"></span></div>
+                <div><label>Allergies:</label><span id="allergies"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Assuming data is stored in localStorage
+        document.getElementById('name').textContent = localStorage.getItem('name');
+        document.getElementById('age').textContent = localStorage.getItem('age');
+        document.getElementById('email').textContent = localStorage.getItem('email');
+        document.getElementById('nationality').textContent = localStorage.getItem('nationality');
+        document.getElementById('phone').textContent = localStorage.getItem('phone');
+        document.getElementById('nutrients').textContent = localStorage.getItem('nutrients');
+        document.getElementById('cuisine').textContent = localStorage.getItem('cuisine');
+        document.getElementById('allergies').textContent = localStorage.getItem('allergies');
+
+        // Check if a profile picture URL is stored
+        const profilePicUrl = localStorage.getItem('profilePicUrl');
+        if (profilePicUrl) {
+            document.getElementById('profile-pic').src = profilePicUrl;
+        }
+    </script>
+</body>
+</html>

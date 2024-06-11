@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Automated Cooking Machine</title>
+    <style>
+        /* Reset and basic styles */
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
+      @import 'config/variables';
+@import 'base/base';
+@import 'components/login';
+@import 'components/breakpoints';
+:root {
+  --white-color: hsl(0, 0%, 100%);
+  --black-color: hsl(0, 0%, 0%);
+
+  --body-font: "Poppins", sans-serif;
+  --h1-font-size: 1.75rem;
+  --normal-font-size: 1rem;
+  --small-font-size: 0.813rem;
+
+  --font-medium: 500;
+}
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: linear-gradient(to bottom, #cce5e5, #d7e7e7); /* Background gradient */
+        }
+
+        .search-bar {
+            background-color: #333;
+            padding: 2px;
+            text-align: center;
+            color: #fff;
+            position: fixed; /* Fixed position to stay on top */
+            top: 0; /* Align to the top */
+            width: 100%; /* Full width */
+            z-index: 99; /* Ensure it's above other elements */
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            margin-top: 40px; /* Adjusted to accommodate search bar */
+        }
+
+        .sidebar {
+            background-color: #333;
+            color: #fff;
+            width: 200px;
+            padding: 20px;
+            height: 100%;
+            position: fixed;
+            top: 40px; /* Align to the bottom of search bar */
+            bottom: 0; /* Align to the bottom */
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .sidebar nav ul {
+            list-style-type: none;
+        }
+
+        .sidebar nav ul li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .content {
+    flex: 1;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    margin-left: 220px; /* Adjusted to accommodate the sidebar */
+}
+
+
+       
+        .card {
+           
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            
+            background-color: rgb(143, 152, 162);
+            opacity:0.85;
+        }
+        .card:hover {
+           
+           padding: 20px;
+           border-radius: 8px;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+           text-align: center;
+           
+           background-color: rgb(143, 152, 162);
+           opacity:0.7;
+       }
+
+        .prompt-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 20px;
+        }
+
+        .prompt-card {
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .prompt-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .search-button {
+            padding: 8px 16px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4a90e2;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #3577c4;
+        }
+        .center {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slider {
+      width: 300px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      user-select: none;
+    }
+    .knob {
+      width: 220px;
+      height: 220px;
+      background: rgb(222, 222, 222);
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .knob .rotator {
+      width: 180px;
+      height: 180px;
+      background: rgb(235, 235, 235);
+      border-radius: 50%;
+      box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2), inset 1px 2px 1px white,
+        2px -1px 1px rgba(9, 18, 54, 0.2), -1px 0px 1px rgba(15, 15, 44, 0.2);
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .knob .text {
+      width: 40px;
+      height: 40px;
+      margin: 0 15px;
+      font-family: poppins;
+      font-size: 16px;
+      font-weight: 600;
+      color: rgb(57, 55, 53);
+      border: 0.3mm solid rgba(57, 55, 53);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pointer {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: calc(50% - 10px);
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      transform-origin: 110px 10px;
+      transform: rotate(-45deg);
+    }
+    .pointer span {
+      font-size: 60px;
+      transform: rotate(180deg) translateX(15px);
+    }
+    circle {
+      fill: none;
+    }
+    circle:nth-child(1) {
+      stroke: rgba(0, 0, 0, 0.7);
+      stroke-width: 15px;
+      stroke-dasharray: 660;
+      transform-origin: center;
+      transform: rotate(135deg);
+      stroke-linecap: round;
+    }
+    circle:nth-child(2) {
+      stroke: rgb(2, 117, 232);
+      stroke-width: 15px;
+      stroke-dasharray: 880;
+      stroke-dashoffset: calc(880 - (660 * 0) / 100);
+      transform-origin: center;
+      transform: rotate(135deg);
+      stroke-linecap: round;
+    }
+    
+@media screen and (min-width: 576px) {
+  .login {
+    justify-content: center;
+  }
+  .form {
+    width: 432px;
+    padding: 4rem 3rem 3.5rem;
+    border-radius: 1.5rem;
+  }
+  .head {
+    font-size: 2rem;
+  }
+  video {
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: -1;
+  opacity: 0.5;
+}
+}
+#threelines{
+margin-right:4000px;
+  align-self: left;
+  justify-self: left;
+  height:30px;
+  width:30px;
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+}
+    </style>
+</head>
+<body>
+  <video id="video1" autoplay muted loop>
+    <source src=".//vid.mp4" type="video/mp4" />
+  </video>
+    <div class="search-bar">
+      <img id="threelines" src="threelines.png" alt="Three lines icon" width="20"> <!-- Add the three lines icon here -->
+        <img id="search" src="search.jpeg" alt="Search icon" width="20">
+        <input type="text" placeholder="Search..." class="search-input">
+        <button class="search-button">Search</button>
+    </div>
+    
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Your profile</a></li>
+                    <li><a href="#">Recipes</a></li>
+                    <li><a href="#">Book A Servicing</a></li>
+                    <li><a href="#">Food Shorts</a></li>
+                    <li><a href="#">Order from Partners</a></li>
+                    <li><a href="#">Order Ingredients</a></li>
+                    <!-- Add more menu items here -->
+                </ul>
+            </nav>
+        </aside>
+        <main class="content">
+            <div class="card temperature-controls">
+                <h2>Temperature</h2>
+                <div class="temperature-display">
+                    <p>14.5°C</p>
+                </div>
+                
+    <div class="center">
+        <div class="slider">
+          <div class="knob">
+            <div class="rotator">
+              <div class="text">0</div>
+            </div>
+            <div class="pointer">
+              <span class="material-icons"> >></span>
+            </div>
+          </div>
+  
+          <svg class="progress-bar" width="300" height="300">
+            <circle class="progress-circle" cx="150" cy="150" r="140"></circle>
+            <circle
+              id="circle2"
+              class="progress-circle"
+              cx="150"
+              cy="150"
+              r="140"
+              style="
+                stroke: url(#gradient);
+                stroke-width: 16px;
+                stroke-linecap: round;
+              "
+            ></circle>
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color: red" />
+                <stop offset="50%" style="stop-color: orange" />
+                <stop offset="100%" style="stop-color: rgb(29, 209, 94)" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </div>
+      
+ 
+                <div class="temperature-buttons">
+                    <button class="decrease">-</button>
+                    <button class="increase">+</button>
+                </div>
+
+            </div>
+            <div class="card device-list">
+                <h2>Devices</h2>
+                <ul>
+                    <li>
+                        <span class="device-name">Device Condition</span>
+                        <span class="device-status">On</span>
+                    </li>
+                    <!-- Add more devices here -->
+                </ul>
+            </div>
+            <div class="card map-container">
+                
+                <div id="gas-level"><h2>Gas level</h2>
+                  <span class="gas"><h1>39%</h1> </span></div>
+            </div>
+            <!-- Cards with prompts -->
+            <div class="card">
+                <h2>Prompts</h2>
+                <div class="prompt-grid">
+                    <div class="prompt-card">
+                        <h3>Boil Water</h3>
+                        <p>Get started by boiling some water.</p>
+                    </div>
+                    <div class="prompt-card">
+                        <h3>Try a Recipe</h3>
+                        <p>Experiment with a new recipe today!</p>
+                    </div>
+                    <div class="prompt-card">
+                        <h3>Cook Rice</h3>
+                        <p>Prepare a delicious rice dish.</p>
+                    </div>
+                    <div class="prompt-card">
+                        <h3>Find New Recipes</h3>
+                        <p>Discover exciting new recipes to try.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script >
+      document.addEventListener('DOMContentLoaded', function() {
+    let knob = document.querySelector(".knob");
+    let circle = document.getElementById("circle2");
+    let pointer = document.querySelector(".pointer");
+    let text = document.querySelector(".text");
+
+    let isRotating = false;
+
+    document.addEventListener("mousedown", (e) => {
+        if (e.target.closest(".knob")) {
+            isRotating = true;
+        }
+    });
+
+    const rotateKnob = (e) => {
+        if (isRotating) {
+            let knobX = knob.getBoundingClientRect().left + knob.clientWidth / 2;
+            let knobY = knob.getBoundingClientRect().top + knob.clientHeight / 2;
+
+            let deltaX = e.clientX - knobX;
+            let deltaY = e.clientY - knobY;
+
+            let angleRad = Math.atan2(deltaY, deltaX);
+            let angleDeg = (angleRad * 180) / Math.PI;
+
+            let rotationAngle = (angleDeg - 135 + 360) % 360;
+
+            if (rotationAngle <= 270) {
+                pointer.style.transform = `rotate(${rotationAngle - 45}deg)`;
+
+                let progressPercent = rotationAngle / 270;
+
+                circle.style.strokeDashoffset = `${880 - 660 * progressPercent}`;
+
+                text.innerHTML = `${Math.round(progressPercent * 100)}`;
+            }
+        }
+    };
+
+    document.addEventListener("mousemove", rotateKnob);
+
+    document.addEventListener("mouseup", () => {
+        isRotating = false;
+    });
+
+    let btn = document.querySelector("#threelines");
+    let nav = document.querySelector(".sidebar"); // Ensure this matches the correct selector
+
+    btn.addEventListener('mouseover', () => {
+        nav.classList.add('visible');
+        nav.classList.remove('hidden');
+    });
+
+    btn.addEventListener('mouseout', () => {
+        setTimeout(() => {
+            if (!nav.matches(':hover')) {
+                nav.classList.add('hidden');
+                nav.classList.remove('visible');
+            }
+        }, 300);
+    });
+
+    nav.addEventListener('mouseleave', () => {
+        nav.classList.add('hidden');
+        nav.classList.remove('visible');
+    });
+});
+</script>
