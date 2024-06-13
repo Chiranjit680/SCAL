@@ -4,7 +4,7 @@
 #include "max6675.h" // max6675.h file is part of the library that you should download from Robojax.com
 
 Servo myservo;
-SoftwareSerial Arduino(13, 12);
+SoftwareSerial Arduino(12, 13);
 
 int flameSensorPin = 2; // Digital pin connected to the flame sensor
 int flameState = 0;
@@ -27,6 +27,9 @@ const int analogPinMQ7 = A1; // Analog pin connected to MQ7 sensor
 const int sparkPlugPin = 10;
 int sparkPlugValue =0;
 
+String data ="";
+String extracted="";
+
 
 
 void setup() {
@@ -37,7 +40,7 @@ void setup() {
   pinMode(sparkPlugPin,OUTPUT);
    myservo.attach(9);
 
-  Arduino.begin(9600);
+  Arduino.begin(4800);
 
  
 
@@ -56,6 +59,8 @@ void loop() {
   // Serial.print("C = "); 
      Arduino.print("#");
      Arduino.print(robojax1.readCelsius());
+     
+
      Arduino.print(",");
      Arduino.print(robojax2.readCelsius());
      Arduino.print(",");
@@ -66,14 +71,17 @@ void loop() {
      Arduino.print(!flameState); // Send the flame state to the   NodeMCU port
      Arduino.println(",");
      delay(1000);
+    
+
 
     if (Arduino.available() > 0) {  //how will ard. differentiate between its output and nOdeMCU's
-    String input = Arduino.readStringUntil('\n');
+    String data = Arduino.readString();
+    Arduino.println(data);
+
         if (data.indexOf("?")==0)
         {
       
-    //  Arduino.println(input);
-    String extracted = extractStringAfterChanged(input);
+    String extracted = extractStringAfterChanged(data);
      // Arduino.println(extracted);
       }
 
@@ -123,6 +131,14 @@ String extractStringAfterChanged(const String& input) {
   }
   return "";
 }
+
+
+
+
+
+
+
+
 
 
 
