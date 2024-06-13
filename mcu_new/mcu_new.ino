@@ -5,11 +5,11 @@
 #include <SoftwareSerial.h>
 
 // SoftwareSerial pins (GPIO numbers)
-SoftwareSerial Arduino(D1,D2); // Connect RX to D1, TX to D2
+SoftwareSerial Arduino(1,3); // Connect RX to D1, TX to D2
 
 // WiFi credentials
-const char* ssid = "JioFiber-CcDpm";
-const char* password = "Is1Eires9AhshaiP";
+const char* ssid = "DE                                                                         SKTOP-DEI238V 0691";
+const char* password = "12344321";
 
 // ThingSpeak credentials
 unsigned long channelID = 2564277; // Replace with your ThingSpeak channel ID
@@ -20,7 +20,7 @@ HTTPClient http;
 
 // URLs for GET requests
 const char* url1 = "http://api.thingspeak.com/talkbacks/52472/commands/41849907.json?api_key=OZN6DFT0C2LJM6I9";//angle - 180 to 180
-const char* url2 = "https://api.thingspeak.com/talkbacks/52541/commands/COMMAND_ID.json?api_key=B0CS5OJZTBDXVK2B";//spark plug -1,0
+const char* url2 = "https://api.thingspeak.com/talkbacks/52541/commands/42075142.json?api_key=B0CS5OJZTBDXVK2B";//spark plug -1,0
 
 String previousRx1 = ""; // To store the previous value  
 String previousRx2 = "";
@@ -77,7 +77,7 @@ String GETCommand2() {
 
 void setup() {
   Serial.begin(9600);
-  Arduino.begin(9600);
+  Arduino.begin(4800);
   
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -148,8 +148,9 @@ void parseAndSendData(String data) {
     ThingSpeak.setField(3, mq2Value);
     ThingSpeak.setField(4, mq7Value);
     ThingSpeak.setField(5, flameSensor);
-    
-    int x = ThingSpeak.writeFields(channelID, writeAPIKey);
+     int channelID =2559973;
+     const char* writeAPIKey="HF58EX1SNR180I7W";
+    int x = ThingSpeak.writeFields(channelID,writeAPIKey);
     if (x == 200) {
       Serial.println("Channel update successful.");
     } else {
