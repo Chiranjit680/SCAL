@@ -1,2 +1,2 @@
 # SCAL
-codes for scal.....under prof Dr. Sudip
+codes for SCAL.....under prof Dr. Sudip
